@@ -10,12 +10,20 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 // 处理键盘输入，检测按键是否被按下
 void processInput(GLFWwindow* window);
 
-const char *vertexShaderSource = "#version 330 core\n"
+const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
 "void main()\n"
 "{\n"
 "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
 "}\0";
+
+const char* fragmentShaderSource = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"}\n\0";
+
 
 int main() {
 	glfwInit();
@@ -60,9 +68,14 @@ GL_STREAM_DRAW ：数据每次绘制时都会改变。*/
 	// 创建顶点着色器
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL); // 第二个参数是传递的字符串数量
 	glCompileShader(vertexShader);
+
+	// 创建片段着色器
+	unsigned int fragmentShader;
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragmentShader);
 
 	int success;
 	char infoLog[512];
@@ -72,6 +85,21 @@ GL_STREAM_DRAW ：数据每次绘制时都会改变。*/
 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
 		std::cout << "GL:COMPILE_ERROR顶点着色器编译错误\n" << infoLog << std::endl;
 	}
+
+	// 着色器程序对象
+	unsigned int shaderProgram;
+	shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+	// 检查链接着色器是否成功
+	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	if (!success) {
+		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		std::cout << "GL::LINK_ERROR着色器程序链接失败\n" << std::endl;
+	}
+
+
 
 	while (!glfwWindowShouldClose(window)) {
 
