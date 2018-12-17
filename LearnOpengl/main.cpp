@@ -2,6 +2,8 @@
 // 要先包含glad的文件，因为glad提供了include<gl.h>之类的操作
 #include<GLFW/glfw3.h>
 
+#include"Shader.h"
+
 #include<iostream>
 
 // 用户改变窗口大小的回调函数
@@ -10,43 +12,11 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 // 处理键盘输入，检测按键是否被按下
 void processInput(GLFWwindow* window);
 
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"}\0";
-
-const char* fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\n\0";
-
 float vertices[] = {
-	0.5f, 0.5f, 0.0f,   // 右上角
-	0.5f, -0.5f, 0.0f,  // 右下角
-	-0.5f, -0.5f, 0.0f, // 左下角
-	-0.5f, 0.5f, 0.0f   // 左上角
-};
-
-unsigned int indices[] = { // 注意索引从0开始! 
-	0, 1, 3, // 第一个三角形
-	1, 2, 3  // 第二个三角形
-};
-
-float vertices1[] = {
-	0.0f,0.5f,0.0f,
-	-0.5f,0.0f,0.0f,
-	0.0f,0.0f,0.0f,
-	0.0f,-0.5f,0.0f,
-	0.5f,0.0f,0.0f
-};
-
-unsigned int indices1[] = {
-	0,1,2,
-	2,3,4
+	// 位置              // 颜色
+	 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // 右下
+	-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // 左下
+	 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // 顶部
 };
 
 int main() {
@@ -73,6 +43,9 @@ int main() {
 
 	glViewport(0, 0, 1280, 1024);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+	// 曾经的着色器代码
+	/*
 
 	// 创建顶点着色器
 	unsigned int vertexShader;
@@ -111,6 +84,10 @@ int main() {
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
+	*/
+
+	Shader mShader("vertexShader.vs", "fragmentShader.fs");
+
 	// 顶点缓冲对象，管理顶点内存，储存大量顶点，使用该对象一次性发送一大批数据到显卡上，而不是每个顶点发送一次。
 	unsigned int VBO;
 	// 顶点数组对象，任何顶点属性调用都会存储在VAO中。配置顶点属性指针的时候，只需要将那些调用执行一次。
@@ -124,9 +101,9 @@ int main() {
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO); // GL_ARRAY_BUFFER是顶点缓冲对象的缓冲类型
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	// 指明索引缓冲渲染
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	/// 指明索引缓冲渲染
+	///glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	///glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	/*GL_STATIC_DRAW ：数据不会或几乎不会改变。
 GL_DYNAMIC_DRAW：数据会被改变很多。
 GL_STREAM_DRAW ：数据每次绘制时都会改变。*/
@@ -140,8 +117,11 @@ GL_STREAM_DRAW ：数据每次绘制时都会改变。*/
 	第五个参数叫做步长(Stride)，它告诉我们在连续的顶点属性组之间的间隔。由于下个组位置数据在3个float之后，我们把步长设置为3 * sizeof(float)。要注意的是由于我们知道这个数组是紧密排列的（在两个顶点属性之间没有空隙）我们也可以设置为0来让OpenGL决定具体步长是多少（只有当数值是紧密排列时才可用）。一旦我们有更多的顶点属性，我们就必须更小心地定义每个顶点属性之间的间隔，我们在后面会看到更多的例子（译注: 这个参数的意思简单说就是从这个属性第二次出现的地方到整个数组0位置之间有多少字节）。
 	最后一个参数的类型是void*，所以需要我们进行这个奇怪的强制类型转换。它表示位置数据在缓冲中起始位置的偏移量(Offset)。由于位置数据在数组的开头，所以这里是0。我们会在后面详细解释这个参数。
 	*/
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);// 位置属性
 	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));// 颜色属性
+	glEnableVertexAttribArray(1);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -150,7 +130,7 @@ GL_STREAM_DRAW ：数据每次绘制时都会改变。*/
 	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0); // 解绑定的操作
 
-	glUseProgram(shaderProgram);
+	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	while (!glfwWindowShouldClose(window)) {
@@ -163,9 +143,15 @@ GL_STREAM_DRAW ：数据每次绘制时都会改变。*/
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT); // 三个参数：Color, Depth, Stencil
 
+		///glUseProgram(shaderProgram);
+		mShader.use();
+
+		float timeValue = glfwGetTime();
+		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		///glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 
 
