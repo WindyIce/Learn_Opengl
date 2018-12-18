@@ -124,6 +124,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Practice_HelloTriangle.cpp" />
+    <ClCompile Include="Pratice_ShaderStart.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader.fs" />
+    <None Include="p1fs.fs" />
+    <None Include="p1vs.vs" />
+    <None Include="p2fs.fs" />
+    <None Include="p2vs.vs" />
+    <None Include="p3fs.fs" />
+    <None Include="p3vs.vs" />
     <None Include="vertexShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

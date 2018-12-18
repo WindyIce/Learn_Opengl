@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\Pratice_ShaderStart">
+      <UniqueIdentifier>{fdb19918-4bd4-46eb-b0df-c6ffa645e5e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Pratice_HelloTriangle">
+      <UniqueIdentifier>{15b141d2-18d5-4ee9-ad5f-a1563605bec2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,11 +27,14 @@
     <ClCompile Include="glad.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Practice_HelloTriangle.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Practice_HelloTriangle.cpp">
+      <Filter>源文件\Pratice_HelloTriangle</Filter>
+    </ClCompile>
+    <ClCompile Include="Pratice_ShaderStart.cpp">
+      <Filter>源文件\Pratice_ShaderStart</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +48,24 @@
     </None>
     <None Include="fragmentShader.fs">
       <Filter>源文件</Filter>
+    </None>
+    <None Include="p1vs.vs">
+      <Filter>源文件\Pratice_ShaderStart</Filter>
+    </None>
+    <None Include="p1fs.fs">
+      <Filter>源文件\Pratice_ShaderStart</Filter>
+    </None>
+    <None Include="p2fs.fs">
+      <Filter>源文件\Pratice_ShaderStart</Filter>
+    </None>
+    <None Include="p2vs.vs">
+      <Filter>源文件\Pratice_ShaderStart</Filter>
+    </None>
+    <None Include="p3vs.vs">
+      <Filter>源文件\Pratice_ShaderStart</Filter>
+    </None>
+    <None Include="p3fs.fs">
+      <Filter>源文件\Pratice_ShaderStart</Filter>
     </None>
   </ItemGroup>
 </Project>
