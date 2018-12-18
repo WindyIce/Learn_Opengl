@@ -1,3 +1,5 @@
 ﻿  main.cpp
-c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(213): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(215): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(256): warning C4305: “+=”: 从“double”到“float”截断
+c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(260): warning C4305: “-=”: 从“double”到“float”截断
   LearnOpengl.vcxproj -> C:\Users\32699\source\repos\LearnOpengl\Debug\LearnOpengl.exe
