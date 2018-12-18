@@ -19,6 +19,9 @@
     <Filter Include="源文件\Pratice_HelloTriangle">
       <UniqueIdentifier>{15b141d2-18d5-4ee9-ad5f-a1563605bec2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Resources">
+      <UniqueIdentifier>{f8bf4838-e2bf-419f-a325-bb93425ec78a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -36,9 +39,15 @@
     <ClCompile Include="Pratice_ShaderStart.cpp">
       <Filter>源文件\Pratice_ShaderStart</Filter>
     </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -67,5 +76,16 @@
     <None Include="p3fs.fs">
       <Filter>源文件\Pratice_ShaderStart</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="wall.jpg">
+      <Filter>源文件\Resources</Filter>
+    </Image>
+    <Image Include="container.jpg">
+      <Filter>源文件\Resources</Filter>
+    </Image>
+    <Image Include="awesomeface.png">
+      <Filter>源文件\Resources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

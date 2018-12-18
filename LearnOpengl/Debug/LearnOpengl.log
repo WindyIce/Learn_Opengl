@@ -1,5 +1,3 @@
-﻿  Pratice_ShaderStart.cpp
-c:\users\32699\source\repos\learnopengl\learnopengl\pratice_shaderstart.cpp(102): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-c:\users\32699\source\repos\learnopengl\learnopengl\pratice_shaderstart.cpp(198): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-c:\users\32699\source\repos\learnopengl\learnopengl\pratice_shaderstart.cpp(296): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+﻿  main.cpp
+c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(213): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
   LearnOpengl.vcxproj -> C:\Users\32699\source\repos\LearnOpengl\Debug\LearnOpengl.exe
