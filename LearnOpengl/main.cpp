@@ -18,11 +18,47 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
 float vertices[] = {
-	// positions          // texture coords
-	 0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
-	 0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
-	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
-	-0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 unsigned int indices[] = {
 	0, 1, 3, // first triangle
@@ -56,6 +92,9 @@ int main() {
 
 	glViewport(0, 0, 1280, 1024);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+	// 开启深度测试
+	glEnable(GL_DEPTH_TEST);
 
 	// 曾经的着色器代码
 	/*
@@ -202,7 +241,8 @@ GL_STREAM_DRAW ：数据每次绘制时都会改变。*/
 	mShader.setInt("texture2", 1);
 
 
-	
+
+
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	while (!glfwWindowShouldClose(window)) {
@@ -213,22 +253,35 @@ GL_STREAM_DRAW ：数据每次绘制时都会改变。*/
 		// 渲染指令.
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT); // 三个参数：Color, Depth, Stencil
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // 三个参数：Color, Depth, Stencil
 
-		///glUseProgram(shaderProgram);
+
 		mShader.use();
 
 		float timeValue = glfwGetTime();
 		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
 
-		glm::mat4 trans;
-		trans = glm::rotate(trans, timeValue, glm::vec3(0.0f, 0.0f, 1.0f));
-		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-		
+		/*
+几种矩阵的处理
+*/
+		glm::mat4 model; // 创建模型矩阵
+		glm::mat4 view; // 创建观察矩阵
+		glm::mat4 proj; // 创建透视投影矩阵
+		model = glm::rotate(model, timeValue*glm::radians(50.0f),
+			glm::vec3(0.5f, 1.0f, 0.0f));
+		// 将矩阵向我们要移动场景的反方向移动
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		proj = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
 
-		// 矩阵修改
-		unsigned int transformLoc = glGetUniformLocation(mShader.ID, "transform");
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+		int modelLoc = glGetUniformLocation(mShader.ID, "model");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+		int viewLoc = glGetUniformLocation(mShader.ID, "view");
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+		int projLoc = glGetUniformLocation(mShader.ID, "projection");
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+		///glUseProgram(shaderProgram);
 
 		mShader.setFloat("mixFactor", mixUniform);
 		glActiveTexture(GL_TEXTURE0);
@@ -236,8 +289,8 @@ GL_STREAM_DRAW ：数据每次绘制时都会改变。*/
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-		///glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		///glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 
 

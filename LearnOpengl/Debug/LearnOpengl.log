@@ -1,7 +1,5 @@
-﻿  Shader.cpp
-  main.cpp
-c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(221): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(271): warning C4305: “+=”: 从“double”到“float”截断
-c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(275): warning C4305: “-=”: 从“double”到“float”截断
-  正在生成代码...
+﻿  main.cpp
+c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(261): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(324): warning C4305: “+=”: 从“double”到“float”截断
+c:\users\32699\source\repos\learnopengl\learnopengl\main.cpp(328): warning C4305: “-=”: 从“double”到“float”截断
   LearnOpengl.vcxproj -> C:\Users\32699\source\repos\LearnOpengl\Debug\LearnOpengl.exe
